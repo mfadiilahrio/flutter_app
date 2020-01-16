@@ -1,3 +1,4 @@
+import 'package:core/contants.dart';
 import 'package:core/movie/get_movie_list_view_model.dart';
 import 'package:core/movie/movie_cloud_service.dart';
 import 'package:core/movie/movie_mapper.dart';
@@ -16,8 +17,8 @@ class MoviePage extends StatelessWidget {
     final mapper = MovieMapper();
     final service = MovieCloudService(
         client: client,
-        key: "5e360c9",
-        host: "www.omdbapi.com",
+        key: KEY,
+        host: HOST,
         mapper: mapper);
 
     return GetMovieListViewModel<String>(service: service);

@@ -1,16 +1,38 @@
+import 'package:core/contants.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/login/login_page.dart';
 import 'package:flutter_app/movie/movie_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_app/session.dart';
+import 'package:flutter_app/util/util.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MyApp(
+
+));
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final session = Session();
+
+
     return MaterialApp(
+      locale: Locale("id"),
+      localizationsDelegates: [const DemoLocalizationsDelegate(), GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate],
+      supportedLocales: [const Locale('en', ''), const Locale('id', '')],
       title: 'OMDB',
-      home: MainPage(),
+      theme: ThemeData(fontFamily: 'Montserrat'),
+      home: FutureBuilder<bool>(
+        future: session.getBooleanSessionValue(SESSION_IS_LOGIN),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.data == false) {
+            return LoginPage();
+          } else {
+            return MainPage();
+          }
+        },
+      ),
     );
   }
 }
@@ -24,53 +46,58 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-  String xmen = "X-Men";
-  String avenger = "Avenger";
-
   @override
   Widget build(BuildContext context) {
-
-    _read() async {
-      final prefs = await SharedPreferences.getInstance();
-      final key = 'name';
-      final value = prefs.getString(key) ?? "";
-    }
+    final session = Session();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Movie"),
+        title: Text(DemoLocalizations.of(context).getText("country") ?? "Error"),
       ),
       body: Center(
         child: Column(
           children: <Widget>[
             MaterialButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MoviePage(
+                                keyword: "x-men",
+                              )));
                 },
-                child: Text("Login"),
+                child: Text(DemoLocalizations.of(context).getText("xmen") ?? "Error"),
                 color: Colors.blue,
                 textColor: Colors.white,
                 padding: EdgeInsets.only(left: 10.0, right: 10.0)),
             MaterialButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MoviePage(keyword: xmen,)));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MoviePage(
+                                keyword: "avenger",
+                              )));
                 },
-                child: Text(xmen),
+                child: Text(DemoLocalizations.of(context).getText("avenger") ?? "Error"),
                 color: Colors.blue,
                 textColor: Colors.white,
                 padding: EdgeInsets.only(left: 10.0, right: 10.0)),
             MaterialButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MoviePage(keyword: avenger,)));
+                  session.logout();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyApp()));
                 },
-                child: Text(avenger),
-                color: Colors.blue,
-                textColor: Colors.white,
+                child: Text(DemoLocalizations.of(context).getText("logout") ?? "Error"),
+                color: Colors.white,
+                textColor: Colors.redAccent,
                 padding: EdgeInsets.only(left: 10.0, right: 10.0)),
           ],
         ),
       ),
     );
   }
-
 }

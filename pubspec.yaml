@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   rxdart: ^0.22.6
   http: ^0.12.0+2
   shared_preferences: ^0.4.3
@@ -26,8 +28,10 @@ flutter:
   uses-material-design: true
 
   assets:
-    - logo.png
+    - assets/images/logo.png
+    - assets/strings/en.json
+    - assets/strings/id.json
   fonts:
     - family: Montserrat
       fonts:
-        - asset: fonts/Montserrat-Regular.ttf
+        - asset: assets/fonts/Montserrat-Regular.ttf

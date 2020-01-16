@@ -1,51 +1,42 @@
+import 'package:core/contants.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_app/main.dart';
+
+import '../session.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
-
-  _save(String name) async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'name';
-    final value = name;
-    prefs.setString(key, value);
-    print('saved $value');
-  }
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   @override
   Widget build(BuildContext context) {
-
-    TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
     String email = "";
     String password = "";
+    final session = Session();
 
     final emailField = TextField(
       onChanged: (text) {
         email = text;
       },
       obscureText: false,
-      style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Email",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final passwordField = TextField(
       onChanged: (text) {
         password = text;
       },
       obscureText: true,
-      style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final loginButon = Material(
       elevation: 5.0,
@@ -55,12 +46,16 @@ class _LoginPageState extends State<LoginPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          widget._save(email);
+          session.setStringSession(SESSION_USER_NAME, email);
+          session.setBooleanSession(SESSION_IS_LOGIN, true);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyApp()));
         },
         child: Text("Login",
             textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
 
@@ -77,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: 155.0,
                   child: Image.asset(
-                    "assets/logo.png",
+                    "assets/images/logo.png",
                     fit: BoxFit.contain,
                   ),
                 ),
