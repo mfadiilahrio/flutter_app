@@ -1,7 +1,9 @@
 {
   "avenger" : "Avenger",
+  "app_name" : "My first flutter app",
   "country" : "English",
   "email" : "Email",
+  "home" : "Home",
   "login" : "Login",
   "logout" : "Logout",
   "password" : "Password",

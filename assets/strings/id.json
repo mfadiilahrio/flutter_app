@@ -1,7 +1,9 @@
 {
   "avenger" : "Avenger",
+  "app_name" : "App flutter pertamaku",
   "country" : "Indonesia",
   "email" : "Email",
+  "home" : "Beranda",
   "login" : "Masuk",
   "logout" : "Keluar",
   "password" : "Password",

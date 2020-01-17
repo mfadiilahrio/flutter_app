@@ -7,11 +7,8 @@ import 'package:http/http.dart';
 
 import 'movie_list.dart';
 
-class MoviePage extends StatelessWidget {
+class MovieScreen extends StatelessWidget {
   final client = Client();
-  final String keyword;
-
-  MoviePage({Key key, this.keyword}) : super(key: key);
 
   get movieListViewModel {
     final mapper = MovieMapper();
@@ -24,19 +21,19 @@ class MoviePage extends StatelessWidget {
     return GetMovieListViewModel<String>(service: service);
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
+    final route =
+    ModalRoute.of(context).settings.arguments as Map<String, String>;
+    final keyword = route['keyword'];
+    return Scaffold(
+      appBar: AppBar(
           title: Text(keyword),
-            leading: IconButton(icon:Icon(Icons.arrow_back),
-              onPressed:() => Navigator.pop(context, false),
-            )
-        ),
-        body: MovieList(viewModel: movieListViewModel, keyword: keyword),
+          leading: IconButton(icon:Icon(Icons.arrow_back),
+            onPressed:() => Navigator.pop(context, false),
+          )
       ),
+      body: MovieList(viewModel: movieListViewModel, keyword: keyword),
     );
   }
 }
